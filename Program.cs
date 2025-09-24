@@ -10,7 +10,10 @@ namespace coding_tracker
         static void Main(string[] args)
         {
             DatabaseManager databaseManager = new();
+            GetUserInput getUserInput = new();
+            
             databaseManager.CreateTable(connectionString);
+            getUserInput.MainMenu();
         }
     }
 }
