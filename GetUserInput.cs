@@ -42,7 +42,7 @@ internal class GetUserInput
                     ProcessDelete();
                     break;
                 case "4":
-                    //ProcessUpdate();
+                    ProcessUpdate();
                     break;
                 default:
                     Console.WriteLine("\nInvalid Command. Please type a number from 0 to 4.\n");
@@ -98,6 +98,50 @@ internal class GetUserInput
             Console.WriteLine("\nYou have to type an Id (or 0 to return to Main Menu).\n");
             commandInput = Console.ReadLine();
         }
+
+        var id = Int32.Parse(commandInput);
+        if (id == 0) MainMenu();
+        var coding = codingController.GetById(id);
+        while (coding.Id == 0)
+        {
+            Console.WriteLine($"\nRecord with id{id} doesn't exist\n");
+            ProcessUpdate();
+        }
+
+        var updateInput = "";
+
+        bool updating = true;
+        while (updating == true)
+        {
+            Console.WriteLine($"\nType 'd' for Date\n");
+            Console.WriteLine($"\nType 't' fo Duration\n");
+            Console.WriteLine($"\nType 's' to save update\n");
+            Console.WriteLine($"\nType '0' to go back to Main Menu\n");
+
+            updateInput = Console.ReadLine();
+            switch (updateInput)
+            {
+                case "d":
+                    coding.Date = GetDateInput();
+                    break;
+                case "t":
+                    coding.Duration = GetDurationInput();
+                    break;
+                case "0":
+                    MainMenu();
+                    updating = false;
+                    break;
+                case "s":
+                    updating = false;
+                    break;
+                default:
+                    Console.WriteLine($"\nType '0' to go back to Main Menu \n");
+                    break;
+            }
+        }
+
+        codingController.Update(coding);
+        MainMenu();
     }
 
     internal string GetDateInput()
