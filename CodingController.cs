@@ -45,6 +45,32 @@ public class CodingController
         TableVisualisation.ShowTable(tableData);
         return tableData;
     }
+
+    internal Coding GetById(int id)
+    {
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            using (var tableCmd = connection.CreateCommand())
+            {
+                connection.Open();
+                tableCmd.CommandText = $"SELECT * FROM coding WHERE Id = '{id}'";
+                using (var reader = tableCmd.ExecuteReader())
+                {
+                    Coding coding = new();
+                    if (reader.HasRows)
+                    {
+                        reader.Read();
+                        coding.Id = reader.GetInt32(0);
+                        coding.Date = reader.GetString(1);
+                        coding.Duration = reader.GetString(2);
+                    }
+
+                    Console.WriteLine("\n\n");
+                    return coding;
+                }
+            }
+        }
+    }
     internal void Post(Coding coding)
     {
         using (var connection = new SqliteConnection(connectionString))
@@ -54,6 +80,20 @@ public class CodingController
                 connection.Open();
                 tableCmd.CommandText = $"INSERT INTO coding (date, duration) VALUES ('{coding.Date}', '{coding.Duration}')";
                 tableCmd.ExecuteNonQuery();
+            }
+        }
+    }
+
+    internal void Delete(int id)
+    {
+        using (var connection = new SqliteConnection(connectionString))
+        {
+            using (var tableCmd = connection.CreateCommand())
+            {
+                connection.Open();
+                tableCmd.CommandText = $"DELETE from coding WHERE Id = '{id}'";
+                tableCmd.ExecuteNonQuery();
+                Console.WriteLine($"\n\nRecord with id {id} was deleted. \n\n");
             }
         }
     }

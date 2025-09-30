@@ -39,7 +39,7 @@ internal class GetUserInput
                     ProcessAdd();
                     break;
                 case "3":
-                    //ProcessDelete();
+                    ProcessDelete();
                     break;
                 case "4":
                     //ProcessUpdate();
@@ -59,6 +59,45 @@ internal class GetUserInput
         coding.Date = date;
         coding.Duration = duration;
         codingController.Post(coding);
+    }
+
+    private void ProcessDelete()
+    {
+        codingController.Get();
+        Console.WriteLine("Please add id of the category you want to delete (or 0 to return to Main menu).");
+
+        string commandInput = Console.ReadLine();
+
+        while (!Int32.TryParse(commandInput, out _) || string.IsNullOrEmpty(commandInput) ||
+               Int32.Parse(commandInput) < 0)
+        {
+            Console.WriteLine("\nYou have to type a valid Id (or 0 to return to Main Menu).\n");
+            commandInput = Console.ReadLine();
+        }
+
+        var id = Int32.Parse(commandInput);
+        if (id == 0) MainMenu();
+        var coding = codingController.GetById(id);
+        while (coding.Id == 0)
+        {
+            Console.WriteLine($"\nRecord with id {id} doesn't exist\n");
+            ProcessDelete();
+        }
+
+        codingController.Delete(id);
+        MainMenu();
+    }
+
+    private void ProcessUpdate()
+    {
+        codingController.Get();
+        Console.WriteLine("Please add id of the category you want to update (or 0 to return to Main Menu).");
+        string commandInput = Console.ReadLine();
+        while (!Int32.TryParse(commandInput, out _) || string.IsNullOrEmpty(commandInput) || Int32.Parse(commandInput) < 0)
+        {
+            Console.WriteLine("\nYou have to type an Id (or 0 to return to Main Menu).\n");
+            commandInput = Console.ReadLine();
+        }
     }
 
     internal string GetDateInput()
