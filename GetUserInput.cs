@@ -33,7 +33,7 @@ internal class GetUserInput
                     Environment.Exit(0);
                     break;
                 case "1":
-                    //codingController.Get();
+                    codingController.Get();
                     break;
                 case "2":
                     ProcessAdd();
