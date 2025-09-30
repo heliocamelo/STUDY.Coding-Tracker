@@ -48,3 +48,4 @@
 /home/helio/Documents/project/coding-tracker/obj/Debug/net8.0/coding-tracker.pdb
 /home/helio/Documents/project/coding-tracker/obj/Debug/net8.0/coding-tracker.genruntimeconfig.cache
 /home/helio/Documents/project/coding-tracker/obj/Debug/net8.0/ref/coding-tracker.dll
+/home/helio/Documents/project/coding-tracker/obj/Debug/net8.0/coding-tracker.sourcelink.json

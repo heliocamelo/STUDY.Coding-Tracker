@@ -4,6 +4,7 @@ namespace coding_tracker;
 
 internal class GetUserInput
 {
+    CodingController codingController = new();
     internal void MainMenu()
     {
         bool closeApp = false;
@@ -53,6 +54,11 @@ internal class GetUserInput
     private void ProcessAdd()
     {
         var date = GetDateInput();
+        var duration = GetDurationInput();
+        Coding coding = new();
+        coding.Date = date;
+        coding.Duration = duration;
+        codingController.Post(coding);
     }
 
     internal string GetDateInput()
@@ -67,5 +73,23 @@ internal class GetUserInput
         }
 
         return dateInput;
+    }
+
+    internal string GetDurationInput()
+    {
+        Console.WriteLine("\n\nPlease insert the duration: (Format: hh:mm). Type 0 " +
+                          "to return to main menu\n\n");
+        string durationInput = Console.ReadLine();
+
+        if (durationInput == "0") MainMenu();
+
+        while (!TimeSpan.TryParseExact(durationInput, "h\\:mm", CultureInfo.InvariantCulture, out _)) ;
+        {
+            Console.WriteLine("\n\nDuration invalid. Please insert the duration: (Format: hh:mm " +
+                              "or type 0 to return to main menu.\n\n");
+            durationInput = Console.ReadLine();
+            if (durationInput == "0") MainMenu();
+        }
+        return durationInput;
     }
 }
